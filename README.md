@@ -89,14 +89,9 @@ This project is under active development. The following major features are plann
 -   **Feature:** Implement Latent Dirichlet Allocation (LDA) topic modeling.
 -   **Goal:** To automatically discover and categorize the underlying themes in the news articles (e.g., "Monetary Policy," "Geopolitical Risk," "Corporate Earnings"). This will add a new `Topic_ID` column to the output, allowing for a deeper, more thematic analysis of market narratives.
 
-### V1.2: The Financial Expert
-
--   **Feature:** Upgrade the sentiment analysis engine from `TextBlob` to a finance-specific transformer model like `FinBERT`.
--   **Goal:** To provide much more accurate and context-aware sentiment scores. FinBERT is trained on financial texts and can better understand the nuanced language of the market, leading to more reliable insights.
-
 ### V2.0: The Advanced Analyzer
 
--   **Feature:** Merge the Topic Modeling and FinBERT features into a single, powerful pipeline.
+-   **Feature:** Upgrade the sentiment analysis engine from `TextBlob` to a finance-specific transformer model like `FinBERT`. Merge the Topic Modeling and FinBERT features into a single, powerful pipeline.
 -   **Goal:** To create a comprehensive analysis tool that can not only determine the sentiment of news with high accuracy but also identify the specific economic or financial themes driving that sentiment.
 
 ## Disclaimer
