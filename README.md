@@ -1,6 +1,23 @@
-# IBKR Historical News Analyzer (V1.1)
+# IBKR Historical News Analyzer
 
-A powerful and robust Python tool to fetch, analyze, and perform advanced topic modeling & sentiment analysis on historical news data from Interactive Brokers for multiple financial contracts.
+A powerful and robust Python tool to fetch, analyze, and perform advanced topic modeling & sentiment analysis on historical news data from Interactive Brokers.
+
+This repository contains the full development history of the project. The latest stable version is **v1.1**.
+
+---
+
+### Official Releases
+
+You can browse the code, documentation, and download the source for each official version by clicking the links below.
+
+| Version | Key Feature                 | Browse Files & README                                                      | View Release Notes & Downloads                                             |
+| :------ | :-------------------------- | :------------------------------------------------------------------------- | :------------------------------------------------------------------------- |
+| **V1.1** | **Advanced Topic Modeling** | [**Browse V1.1 Files**](https://github.com/DanielPaulDsouza/ibkr-news-analyzer/tree/v1.1) | [**V1.1 Release Notes**](https://github.com/DanielPaulDsouza/ibkr-news-analyzer/releases/tag/v1.1) |
+| **V1.0** | **Stable Harvester** | [Browse V1.0 Files](https://github.com/DanielPaulDsouza/ibkr-news-analyzer/tree/v1.0)   | [V1.0 Release Notes](https://github.com/DanielPaulDsouza/ibkr-news-analyzer/releases/tag/v1.0)   |
+
+---
+
+## About the Latest Version (V1.1)
 
 This project has evolved from a simple data harvester into a sophisticated analysis engine. It connects to the IBKR API, downloads news for multiple symbols over a specified date range, and then applies a professional-grade Natural Language Processing (NLP) pipeline to each article. It also analyzes every article for sentiment and flags articles that match your keywords. The final output is a single, rich CSV file containing sentiment scores, keyword flags, and a discovered "Topic ID" for each article, enabling deep thematic analysis, further analysis or visualization.
 
