@@ -26,6 +26,13 @@ KEYWORDS_TO_SEARCH = [
     'buyback', 'guidance', 'downgrade', 'upgrade'
 ]
 
+# --- Topic Modeling Settings ---
+# This defines how many distinct topics the LDA model will try to discover
+# in the collection of news articles. There is no single "correct" number.
+# - A small number (e.g., 5) will result in very broad, high-level topics.
+# - A large number (e.g., 20-30) will result in more specific, granular topics.
+NUM_TOPICS = 20
+
 # --- Time Frame for News Search ---
 # This script uses naive local datetimes
 
