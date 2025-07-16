@@ -117,7 +117,6 @@ This project is under active development. The following major features are plann
 ### V2.0: The Advanced Analyzer
 
 -   **Feature:** Upgrade the sentiment analysis engine from `TextBlob` to a finance-specific transformer model like `FinBERT`. Merge the Topic Modeling and FinBERT features into a single, powerful pipeline.
--   **Feature:** Upgrade the sentiment analysis engine from `TextBlob` to a finance-specific transformer model like `FinBERT`. Merge the Topic Modeling and FinBERT features into a single, powerful pipeline.
 -   **Goal:** To create a comprehensive analysis tool that can not only determine the sentiment of news with high accuracy but also identify the specific economic or financial themes driving that sentiment.
 
 ## Disclaimer
