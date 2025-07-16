@@ -7,6 +7,7 @@ from ib_insync import IB, util
 import config
 from news_fetcher import fetch_historical_news, get_full_article
 from sentiment_analyzer import analyze_sentiment
+from topic_modeler import perform_topic_modeling
 
 def main():
     """
@@ -44,7 +45,7 @@ def main():
             # Sort headlines by time, newest first
             sorted_headlines = sorted(all_headlines, key=lambda h: h.time, reverse=True)
 
-            # --- NEW: Batch processing logic to avoid rate limiting ---
+            # --- Batch processing logic to avoid rate limiting ---
             BATCH_SIZE = 200  # Process 200 articles at a time
             BATCH_PAUSE = 2 # Pause for 2 seconds between batches
 
@@ -80,7 +81,7 @@ def main():
                         'Article': article_text.replace('\n', ' ').strip()
                     })
                 
-                    # A more useful progress indicator for batches
+                    # progress indicator for batches
                     print(f"  -> Processed: {headline.headline[:60]}...", end='\r')
                     ib.sleep(0.1) # Small pause between each article
 
@@ -91,26 +92,55 @@ def main():
             
             print(f"\n\n{'='*20} Finished processing: {symbol} {'='*20}")
 
-            # Don't pause after the very last symbol
+            # Don't pause after the last symbol
             if symbol != config.CONTRACT_SYMBOLS[-1]:
                 print("Pausing before next symbol to respect API rate limits...")
-                ib.sleep(5) # CRITICAL: Longer pause between symbols
+                ib.sleep(5) #Longer pause between symbols
 
+        # --- Perform Topic Modeling on ALL collected articles ---
+        if all_symbols_results:
+            # Create a list of just the article texts to feed into the model
+            all_article_texts = [result['Article'] for result in all_symbols_results]
+
+            # --- Define date strings once for use in all filenames ---
+            start_str = config.START_DATE.strftime('%Y%m%d-%H%M%S')
+            end_str = config.END_DATE.strftime('%Y%m%d-%H%M%S')
+
+            # Perform the topic modeling
+            topic_ids, topics = perform_topic_modeling(all_article_texts, num_topics=config.NUM_TOPICS)
+
+            # Add the discovered topic ID to each result
+            for i, result in enumerate(all_symbols_results):
+                result['Topic_ID'] = topic_ids[i]
+
+            # --- Save the topic summary to a text file ---
+            # Create a formatted string with the topic details
+            topic_summary_lines = ["--- Discovered Topic Summary ---"]
+            for topic_id, top_words in enumerate(topics):
+                topic_summary_lines.append(f"Topic #{topic_id}: {', '.join(top_words)}")
+            
+            # Define the path for the summary file
+            summary_filename = f"topic_summary_from_{start_str}_to_{end_str}.txt"
+            summary_filepath = os.path.join(config.OUTPUT_DIRECTORY, summary_filename)
+            
+            # Write the summary to the file
+            with open(summary_filepath, 'w') as f:
+                f.write('\n'.join(topic_summary_lines))
+            print(f"\nSaved topic summary to '{summary_filepath}'")
+        
         # --- Save Combined Report to CSV ---
         if all_symbols_results:
             print("\nSaving combined report to CSV...")
             if not os.path.exists(config.OUTPUT_DIRECTORY):
                 os.makedirs(config.OUTPUT_DIRECTORY)
 
-            start_str = config.START_DATE.strftime('%Y%m%d-%H%M%S')
-            end_str = config.END_DATE.strftime('%Y%m%d-%H%M%S')
             filename = f"news_report_combined_from_{start_str}_to_{end_str}.csv"
             filepath = os.path.join(config.OUTPUT_DIRECTORY, filename)
 
             # Create and save DataFrame
             df = pd.DataFrame(all_symbols_results)
             # Reorder columns to put Symbol first
-            df = df[['Symbol', 'Date', 'Time', 'Provider', 'Matches_Keywords', 'Sentiment', 'Polarity', 'Headline', 'Article']]
+            df = df[['Symbol', 'Date', 'Time', 'Provider', 'Matches_Keywords', 'Topic_ID', 'Sentiment', 'Polarity', 'Headline', 'Article']]
             df.to_csv(filepath, index=False, encoding='utf-8')
             print(f"\nSuccessfully saved the report to '{os.path.abspath(filepath)}'")
         else:
